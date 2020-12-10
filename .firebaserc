@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "babylon-js-with-angular": {
+      "hosting": {
+        "dddcss": [
+          "angular-3dcss"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "babylon-js-with-angular"
+  }
+}
