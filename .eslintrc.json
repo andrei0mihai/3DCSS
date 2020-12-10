@@ -3,8 +3,6 @@
   "ignorePatterns": [
     "projects/**/*"
   ],
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
   "overrides": [
     {
       "files": [
