@@ -1,0 +1,109 @@
+:host {
+    display: flex;
+
+    @function getHorizontalBackgroundLines($background-color:white) {
+        @return repeating-linear-gradient(to top, grey, grey 1px, $background-color 1px, $background-color 25%);
+    }
+
+    @function hexToRgba($color, $alpha:0) {
+        @return rgba(red($color), green($color), blue($color), $alpha);
+    }
+
+    .column {
+        $background: getHorizontalBackgroundLines();
+        $border: 1px solid dimgray;
+        $grey-background: getHorizontalBackgroundLines(lightgrey);
+        $height: 90%;
+        $ratio: var(--ratio);
+        $lineThickness: calc(var(--width)*0.002px + #{$ratio}*1px);
+        $vertical-line: linear-gradient(to right, hexToRgba(white) 49.75%, hexToRgba(black, 1) 49.75%, hexToRgba(black, 1) 50.25%, hexToRgba(white) 50.25%, hexToRgba(white));
+        border-bottom: $border;
+        border-top: $border;
+        display: flex;
+        flex-grow: 1;
+        height: $height;
+        justify-content: center;
+        position: relative;
+
+        &.grey {
+            background: $grey-background;
+        }
+
+        &:not(.grey) {
+            background: $background;
+        }
+
+        // year
+        &::before {
+            $tenPercentHeight: calc(0.1*var(--height));
+            $fontSize: calc(0.4px*#{$tenPercentHeight});
+
+            // negative bottom is relative to bottom of chart
+            bottom: calc((#{$tenPercentHeight}*-1px - #{$fontSize})/2);
+            content: attr(year);
+            font-size: $fontSize;
+            pointer-events: none;
+            position: absolute;
+        }
+
+        // tooltip
+        &::after {
+            background-color: white;
+            border-radius: 1px;
+            bottom: var(--tooltip-height);
+            box-shadow: 0 0 2px 1px grey;
+            color: black;
+            content: attr(year)'\A      'attr(value);
+            display: none;
+            padding: 2%;
+            position: absolute;
+            white-space: pre-wrap;
+            z-index: 2;
+        }
+
+        &:hover::after {
+            display: block;
+        }
+
+        &:hover {
+            --dot-size: calc(var(--width)*0.035px + #{$ratio}*1px);
+            $vertical-line-width: 0.8%;
+            $vertical-line: linear-gradient(to right, hexToRgba(white) calc(50% - #{$vertical-line-width}/2), hexToRgba(black, 1) calc(50% - #{$vertical-line-width}/2), hexToRgba(black, 1) calc(50% + #{$vertical-line-width}/2), hexToRgba(white) calc(50% + #{$vertical-line-width}/2), hexToRgba(white));
+
+            background: #{$vertical-line},
+            #{$background};
+
+            &.grey {
+                background: #{$vertical-line},
+                #{$grey-background};
+            }
+        }
+
+        &:not(:hover) {
+            --dot-size: calc(var(--width)*0.03px + #{$ratio}*1px);
+        }
+
+        .dot {
+            background: blue;
+            border-radius: 100%;
+            bottom: calc(var(--bottom) - (var(--dot-size) - #{$lineThickness})/2);
+            height: var(--dot-size);
+            position: absolute;
+            transition: 0.1s;
+            transition-timing-function: cubic-bezier(0, 0.71, 0, 2.26);
+            width: var(--dot-size);
+        }
+
+        .line {
+            background-color: blue;
+            bottom: var(--bottom);
+            height: $lineThickness;
+            left: var(--left);
+            position: absolute;
+            transform: rotate(var(--angle));
+            transform-origin: left bottom;
+            width: var(--hypotenuse);
+            z-index: 1;
+        }
+    }
+}

@@ -1,0 +1,6 @@
+<span *ngFor="let entry of displayModel;let index=index" #columns class="column" [class.grey]=(index+1)%2
+    [attr.value]=entry.value [attr.year]=entry.year [style]="{'--bottom':entry.bottom+'px','--left':entry.left+'px'}">
+    <span class="dot"></span>
+
+    <span class="line" [style]="{'--hypotenuse':entry.hypotenuse+'px','--angle':entry.angle+'deg'}"></span>
+</span>
