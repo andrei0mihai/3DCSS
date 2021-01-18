@@ -29,8 +29,60 @@
             background: $grey-background;
         }
 
+        &:hover {
+            --dot-size: calc(var(--width)*0.035px + #{$ratio}*1px);
+            $vertical-line-width: 0.8%;
+            $vertical-line: linear-gradient(to right, hexToRgba(white) calc(50% - #{$vertical-line-width}/2), hexToRgba(black, 1) calc(50% - #{$vertical-line-width}/2), hexToRgba(black, 1) calc(50% + #{$vertical-line-width}/2), hexToRgba(white) calc(50% + #{$vertical-line-width}/2), hexToRgba(white));
+
+            background: #{$vertical-line},
+            #{$background};
+
+            .dot {
+                &::before {
+                    $tooltipDotSize: calc(var(--dot-size)*0.6);
+                    background: blue;
+                    border-radius: 100%;
+                    bottom: calc(var(--tooltipBottom)*1px + #{$tooltipDotSize}*1px);
+                    content: '';
+                    height: $tooltipDotSize;
+                    left: calc(var(--left) - 27px);
+                    position: fixed;
+                    width: $tooltipDotSize;
+                    z-index: 3;
+                }
+            }
+
+            &.grey {
+                background: #{$vertical-line},
+                #{$grey-background};
+            }
+        }
+
+        &:hover::after {
+            display: block;
+        }
+
         &:not(.grey) {
             background: $background;
+        }
+
+        &:not(:hover) {
+            --dot-size: calc(var(--width)*0.03px + #{$ratio}*1px);
+        }
+
+        // tooltip
+        &::after {
+            background-color: white;
+            border-radius: 1px;
+            bottom: calc(var(--tooltipBottom)*1px);
+            box-shadow: 0 0 2px 1px grey;
+            color: black;
+            content: attr(year)'\A      'attr(value);
+            display: none;
+            padding: 2%;
+            position: absolute;
+            white-space: pre-wrap;
+            z-index: 2;
         }
 
         // year
@@ -44,43 +96,6 @@
             font-size: $fontSize;
             pointer-events: none;
             position: absolute;
-        }
-
-        // tooltip
-        &::after {
-            background-color: white;
-            border-radius: 1px;
-            bottom: var(--tooltip-height);
-            box-shadow: 0 0 2px 1px grey;
-            color: black;
-            content: attr(year)'\A      'attr(value);
-            display: none;
-            padding: 2%;
-            position: absolute;
-            white-space: pre-wrap;
-            z-index: 2;
-        }
-
-        &:hover::after {
-            display: block;
-        }
-
-        &:hover {
-            --dot-size: calc(var(--width)*0.035px + #{$ratio}*1px);
-            $vertical-line-width: 0.8%;
-            $vertical-line: linear-gradient(to right, hexToRgba(white) calc(50% - #{$vertical-line-width}/2), hexToRgba(black, 1) calc(50% - #{$vertical-line-width}/2), hexToRgba(black, 1) calc(50% + #{$vertical-line-width}/2), hexToRgba(white) calc(50% + #{$vertical-line-width}/2), hexToRgba(white));
-
-            background: #{$vertical-line},
-            #{$background};
-
-            &.grey {
-                background: #{$vertical-line},
-                #{$grey-background};
-            }
-        }
-
-        &:not(:hover) {
-            --dot-size: calc(var(--width)*0.03px + #{$ratio}*1px);
         }
 
         .dot {
@@ -98,7 +113,7 @@
             background-color: blue;
             bottom: var(--bottom);
             height: $lineThickness;
-            left: var(--left);
+            left: var(--middleOfColumnWidth);
             position: absolute;
             transform: rotate(var(--angle));
             transform-origin: left bottom;
